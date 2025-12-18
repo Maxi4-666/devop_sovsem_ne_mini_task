@@ -3,11 +3,11 @@ server:
 
 spring:
   application:
-    name: todo-app-raif
+    name: todo-app
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/todo}
-    username: ${SPRING_DATASOURCE_USERNAME:todo}
-    password: ${SPRING_DATASOURCE_PASSWORD:todo}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/todo-app}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
   jpa:
     hibernate:
       ddl-auto: ${JPA_DDL_AUTO:update}
