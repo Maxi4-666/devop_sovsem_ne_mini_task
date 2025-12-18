@@ -1,0 +1,20 @@
+# ===== Java / Maven / Gradle =====
+target/
+build/
+.gradle/
+
+# ===== IDE =====
+.idea/
+.vscode/
+*.iml
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== Logs =====
+*.log
+logs/
+
+# ===== Env =====
+.env
