@@ -45,7 +45,7 @@ pipeline {
                     if (isUnix()) {
                         sh "docker build -f Dockerfile_Max -t ${IMAGE_NAME}:${IMAGE_TAG} ."
                     } else {
-                        bat "docker build -f Dockerfile_Max -t %IMAGE_NAME%:%IMAGE_TAG% ."
+                        bat "docker build -f docker/Dockerfile_Max -t %IMAGE_NAME%:%IMAGE_TAG% ."
                     }
                 }
             }
