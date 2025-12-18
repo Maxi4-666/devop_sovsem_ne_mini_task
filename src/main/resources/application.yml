@@ -1,24 +1,65 @@
-server:
-  port: ${SERVER_PORT:8080}
-
 spring:
   application:
     name: todo-app
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:default}
+
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/todo-app}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/todo}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
     password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: ${JPA_DDL_AUTO:update}
+      ddl-auto: update
+    show-sql: false
     open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: ${SERVER_PORT:8080}
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.hibernate.SQL: WARN
 
 management:
+  server:
+    port: ${MANAGEMENT_PORT:8080}
+
   endpoints:
     web:
       exposure:
         include: health,info,metrics
+
   endpoint:
     health:
       probes:
         enabled: true
+      show-details: always
+
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+
+info:
+  app:
+    name: Todo Application
+    description: Spring Boot Todo app running in Kubernetes
+    version: 1.0.0
