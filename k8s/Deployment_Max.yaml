@@ -1,32 +1,32 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: todo-app
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: todo
-  template:
-    metadata:
-      labels:
-        app: todo
-    spec:
-      containers:
-        - name: todo-app
-          image: notlinux8800/maxchsh:1.0
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 8080
-          envFrom:
-            - configMapRef:
-                name: todo-config
-            - secretRef:
-                name: todo-secret
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "256Mi"
-            limits:
-              cpu: "500m"
-              memory: "512Mi"
+containers:
+  - name: todo-app
+    image: notlinux8800/maxchsh:1.0
+    imagePullPolicy: Always
+    ports:
+      - containerPort: 8080
+    # Ensure keys in these matches SPRING_DATASOURCE_...
+    envFrom:
+      - configMapRef:
+          name: todo-config
+      - secretRef:
+          name: todo-secret
+    # ADDED: Liveness and Readiness Probes (Step 2.2)
+    readinessProbe:
+      httpGet:
+        path: /actuator/health/readiness # Or just "/" if no actuator
+        port: 8080
+      initialDelaySeconds: 20
+      periodSeconds: 10
+    livenessProbe:
+      httpGet:
+        path: /actuator/health/liveness
+        port: 8080
+      initialDelaySeconds: 30
+      periodSeconds: 15
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
